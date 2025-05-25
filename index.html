@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartVision Pro: AI-Powered Navigation Hat for the Visually Impaired</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        :root {
+            --primary: #FF6F00;
+            --secondary: #FFA726;
+            --accent: #7E57C2;
+        }
+
+        body {
+            background-color: var(--primary);
+            margin: 0;
+            font-family: 'Segoe UI', system-ui;
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2));
+        }
+
+        .title {
+            font-size: 3em;
+            margin: 20px 0;
+            letter-spacing: -1px;
+            font-weight: 700;
+        }
+
+        .quote {
+            font-size: 1.6em;
+            margin: 30px 15%;
+            font-style: italic;
+            line-height: 1.4;
+            opacity: 0.9;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 1200px;
+            height: 500px;
+            object-fit: contain;
+            margin: 30px auto;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 20px 45px;
+            border-radius: 40px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            font-weight: 600;
+        }
+
+        .content-page {
+            display: none;
+            padding: 80px 10%;
+            background: rgba(255,255,255,0.97);
+            color: #2d3748;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .active-page {
+            display: block;
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 2.6em;
+            margin-bottom: 50px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .spec-card {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .spec-card h3 {
+            color: var(--primary);
+            font-size: 1.6em;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .visualization-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 40px;
+        }
+
+        .visualization {
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+        }
+
+        .integration-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1300px;
+            margin: 50px auto;
+        }
+
+        .story-card {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+            color: #4a5568;
+        }
+
+        .integration-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .integration-table td {
+            padding: 15px;
+            border: 1px solid #eee;
+        }
+
+        .integration-table td:first-child {
+            font-weight: 600;
+            background: #f8f9fa;
+        }
+
+        .nav-arrows {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 10%;
+        }
+        
+        .arrow-button {
+            background: var(--secondary);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            border: none;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .arrow-button:hover {
+            transform: translateY(-3px);
+        }
+
+        .integration-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .integration-diagram {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        }
+
+        .integration-diagram h3 {
+            color: var(--primary);
+            font-size: 1.8em;
+            margin-bottom: 25px;
+        }
+
+        .integration-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .integration-list li {
+            padding: 15px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-left: 4px solid var(--secondary);
+            border-radius: 8px;
+            transition: transform 0.2s ease;
+            color: #4a5568;
+        }
+
+        .integration-list li:hover {
+            transform: translateX(10px);
+        }
+
+        /* New Image Grid Styles */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .image-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .image-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .image-caption {
+            color: var(--primary);
+            font-size: 1.1em;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Animation Styles */
+        .hats-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .hat-particle {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background-image: url('https://i.postimg.cc/rsMhv0jf/smarthat-animation.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.15;
+            animation: hat-float 25s infinite linear;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        @keyframes hat-float {
+            0% { transform: translateY(110vh) translateX(-10vw); }
+            100% { transform: translateY(-30vh) translateX(10vw); }
+        }
+
+        .hat-particle:hover {
+            opacity: 0.9;
+            transform: scale(2) !important;
+            z-index: 100;
+            animation-play-state: paused;
+            filter: brightness(1.2);
+        }
+
+        .header, .content-page {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="hats-container"></div>
+
+    <div class="header">
+        <h1 class="title">SmartVision Pro</h1>
+        <div class="quote">"Improve your life consistently with strong support and enhanced mobility"</div>
+        <img src="https://i.postimg.cc/HWZGV4Bs/photo-collage-4.png" alt="Smart Hat System" class="hero-image">
+        
+        <div class="nav-buttons">
+            <button class="nav-button" onclick="showPage('hardware', true)">Hardware Platform</button>
+            <button class="nav-button" onclick="showPage('software', true)">AI Software Stack</button>
+            <button class="nav-button" onclick="showPage('analytics', true)">Performance Metrics</button>
+        </div>
+    </div>
+
+    <div id="hardware" class="content-page">
+        <h2 class="section-title">Advanced Wearable Computing Platform</h2>
+        <div class="integration-grid">
+            <div class="story-card">
+                <h3 style="color: var(--primary); margin-top: 0;">Precision Engineering</h3>
+                <p>The SmartVision Pro features a Raspberry Pi 5 computing core (2.4GHz Cortex-A76) managing six ultrasonic HC-SR04 sensors with temperature compensation for 360° obstacle detection (92.2% accuracy). Our dual-camera system combines a Sony IMX500 (8MP daylight vision) with Raspberry Pi's IR-enabled IMX219 module, ensuring 24/7 environmental awareness.</p>
+                <p>The ergonomic design incorporates active thermal management (heatsink + fan) maintaining stable operation below 93°C. A smart power system dynamically allocates energy from our 10,000mAh battery (2.5-3 hour runtime), balancing between compute-intensive vision processing and essential proximity sensing.</p>
+            </div>
+            <div class="spec-card">
+                <h3>Key Hardware Features</h3>
+                <table class="integration-table">
+                    <tr><td>Processing Core</td><td>Raspberry Pi 5 with 8GB RAM</td></tr>
+                    <tr><td>Sensor Array</td><td>6x HC-SR04 Ultrasonic + Dual Camera System</td></tr>
+                    <tr><td>Battery System</td><td>10,000mAh @ 5V/3A with Dynamic Allocation</td></tr>
+                    <tr><td>Connectivity</td><td>Wi-Fi 6 + Bluetooth 5.2 + Ngrok Tunneling</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Hardware Images -->
+        <div class="image-grid">
+            <div class="image-card">
+                <img src="https://i.postimg.cc/ZqQx1YZG/make-it-very-professional.png" alt="Hardware Platform">
+                <div class="image-caption">Hardware Architecture</div>
+            </div>
+        </div>
+
+        <div class="integration-column">
+            <div class="integration-diagram">
+                <h3>Hardware-Software Integration</h3>
+                <ul class="integration-list">
+                    <li>RPi 5's GPIO pins interface with ultrasonic sensors</li>
+                    <li>MIPI camera ports stream to TensorFlow Lite models</li>
+                    <li>Power management IC coordinates with software load balancer</li>
+                    <li>Thermal sensors feed data to performance throttling system</li>
+                </ul>
+            </div>
+            <div class="integration-diagram">
+                <h3>Real-Time Data Flow</h3>
+                <ul class="integration-list">
+                    <li>Ultrasonic sensors → Kalman filter → Risk assessment</li>
+                    <li>Camera streams → MobileNetV2 SSD → Object mapping</li>
+                    <li>Battery metrics → Power management algorithm</li>
+                    <li>Sensor fusion → WebSocket → Voice feedback</li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-arrows">
+            <div></div>
+            <button class="arrow-button" onclick="showPage('software', true)">Explore AI Software →</button>
+        </div>
+    </div>
+
+    <div id="software" class="content-page">
+        <h2 class="section-title">Intelligent Navigation Stack</h2>
+        <div class="integration-grid">
+            <div class="story-card">
+                <h3 style="color: var(--primary); margin-top: 0;">Cognitive Navigation System</h3>
+                <p>Our edge-optimized AI stack combines TensorFlow Lite with MobileNetV2 SSD models for real-time object detection (83% accuracy). Processes dual video streams (300x300@30fps for inference, 2028x1520 for logging) while fusing ultrasonic data through Kalman filters.</p>
+                <p>Context-aware prioritization alerts users to moving vehicles before static objects. Voice-first interface delivers spatial cues (<260ms latency) through smartphone integration (Web Speech API + Socket.IO). Firebase enables real-time caregiver monitoring without compromising edge responsiveness.</p>
+            </div>
+            <div class="spec-card">
+                <h3>Software Architecture</h3>
+                <table class="integration-table">
+                    <tr><td>AI Engine</td><td>TensorFlow Lite + MobileNetV2 SSD</td></tr>
+                    <tr><td>Sensor Fusion</td><td>Kalman-filtered Ultrasonic Array</td></tr>
+                    <tr><td>Cloud Integration</td><td>Firebase Firestore + GCP Maps API</td></tr>
+                    <tr><td>Voice Interface</td><td>Web Speech API + 95% Directional Accuracy</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Software Images -->
+        <div class="image-grid">
+            <div class="image-card">
+                <img src="https://i.postimg.cc/rFyRNX2x/objectdetection-1.jpg" alt="Object Detection">
+                <div class="image-caption">Real-Time Object Detection</div>
+            </div>
+            <div class="image-card">
+                <img src="https://i.postimg.cc/KzZQPpGz/smarthatinteractivedashboard.png" alt="Dashboard">
+                <div class="image-caption">Interactive Monitoring Dashboard</div>
+            </div>
+            <div class="image-card">
+                <img src="https://i.postimg.cc/wMrSbYMF/sss-232-123.png" alt="Processing Pipeline">
+                <div class="image-caption">Smart Hat’s Interactive Monitoring Dashboard</div>
+            </div>
+        </div>
+
+        <div class="integration-column">
+            <div class="integration-diagram">
+                <h3>Software-Hardware Synergy</h3>
+                <ul class="integration-list">
+                    <li>TensorFlow Lite optimizations for ARM Cortex-A76</li>
+                    <li>Dual camera synchronization via Picamera2 API</li>
+                    <li>Real-time sensor polling at 20Hz intervals</li>
+                    <li>Power-aware thread scheduling</li>
+                </ul>
+            </div>
+            <div class="integration-diagram">
+                <h3>Processing Pipeline</h3>
+                <ul class="integration-list">
+                    <li>Frame capture → Low-res inference → High-res logging</li>
+                    <li>Ultrasonic data → Noise filtering → Proximity mapping</li>
+                    <li>Fusion engine → Priority scoring → Voice alerts</li>
+                    <li>System health → Firebase → Remote monitoring</li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-arrows">
+            <button class="arrow-button" onclick="showPage('hardware', true)">← Hardware</button>
+            <button class="arrow-button" onclick="showPage('analytics', true)">See Performance →</button>
+        </div>
+    </div>
+
+    <div id="analytics" class="content-page">
+        <h2 class="section-title">Performance Benchmarking</h2>
+        <div class="visualization-container">
+            <div class="visualization" id="latencyAnalysis"></div>
+            <div class="visualization" id="batteryPerformance"></div>
+            <div class="visualization" id="detectionAccuracy"></div>
+            <div class="visualization" id="systemHealth"></div>
+        </div>
+        <div class="nav-arrows">
+            <button class="arrow-button" onclick="showPage('software', true)">← AI Software</button>
+            <div></div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId, scrollTo) {
+            document.querySelectorAll('.content-page').forEach(page => page.classList.remove('active-page'));
+            const activePage = document.getElementById(pageId);
+            activePage.classList.add('active-page');
+            scrollTo ? activePage.scrollIntoView({ behavior: 'smooth' }) : window.scrollTo(0, 0);
+        }
+
+        showPage('hardware', false);
+
+        // Charts
+        Plotly.newPlot('detectionAccuracy', [{
+            x: ['Humans', 'Vehicles', 'Chairs', 'Obstacles'],
+            y: [95, 92, 89, 93],
+            type: 'bar',
+            marker: {color: ['#FF6F00', '#FFA726', '#7E57C2', '#66BB6A']}
+        }], {
+            title: 'Object Detection Accuracy (%)',
+            paper_bgcolor: 'rgba(255,255,255,0.9)',
+            font: {color: '#2d3748'},
+            xaxis: {title: 'Object Category'},
+            yaxis: {range: [85,100], title: 'Accuracy'}
+        });
+
+        Plotly.newPlot('latencyAnalysis', [{
+            values: [230, 80, 100],
+            labels: ['Object Detection', 'Ultrasonic', 'Voice Feedback'],
+            type: 'pie',
+            marker: {colors: ['#FF6F00', '#7E57C2', '#66BB6A']},
+            textinfo: 'label+value+percent',
+            hoverinfo: 'label+value'
+        }], {
+            title: 'Real-Time Response Latency Distribution',
+            paper_bgcolor: 'rgba(255,255,255,0.9)',
+            font: {color: '#2d3748'}
+        });
+
+        Plotly.newPlot('batteryPerformance', [
+            {
+                x: [0, 30, 60, 90, 120],
+                y: [100, 75, 50, 25, 0],
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Battery Level',
+                line: {color: '#FF6F00', width: 4},
+                marker: {size: 8}
+            },
+            {
+                x: [0, 30, 60, 90, 120],
+                y: [45, 65, 82, 89, 93],
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Temperature (°C)',
+                line: {color: '#EF5350', width: 4, dash: 'dot'},
+                marker: {size: 10, symbol: 'diamond'},
+                yaxis: 'y2'
+            }
+        ], {
+            title: 'Battery & Thermal Performance',
+            paper_bgcolor: 'rgba(255,255,255,0.9)',
+            xaxis: {title: 'Operation Time (minutes)'},
+            yaxis: {title: 'Battery %', range: [0,100]},
+            yaxis2: {
+                title: 'Temperature (°C)',
+                overlaying: 'y',
+                side: 'right',
+                range: [40,100]
+            }
+        });
+
+        Plotly.newPlot('systemHealth', [{
+            values: [38.4, 18.7, 42.9],
+            labels: ['CPU Usage', 'Memory', 'Temperature'],
+            type: 'pie',
+            hole: 0.5,
+            marker: {colors: ['#FF6F00', '#7E57C2', '#EF5350']}
+        }], {
+            title: 'Resource Allocation (%)',
+            paper_bgcolor: 'rgba(255,255,255,0.9)',
+            font: {color: '#2d3748'}
+        });
+
+        // Animation System
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.hats-container');
+            
+            // Create 40 hats
+            for(let i = 0; i < 40; i++) {
+                const hat = document.createElement('div');
+                hat.className = 'hat-particle';
+                
+                hat.style.left = `${Math.random() * 100}%`;
+                hat.style.top = `${Math.random() * 120}%`;
+                const size = 60 + Math.random() * 40;
+                hat.style.width = `${size}px`;
+                hat.style.height = `${size}px`;
+                hat.style.animationDelay = `${Math.random() * 20}s`;
+                hat.style.animationDuration = `${15 + Math.random() * 15}s`;
+                
+                container.appendChild(hat);
+            }
+
+            // Mouse interaction
+            document.addEventListener('mousemove', (e) => {
+                document.querySelectorAll('.hat-particle').forEach(hat => {
+                    const rect = hat.getBoundingClientRect();
+                    const hatX = rect.left + rect.width/2;
+                    const hatY = rect.top + rect.height/2;
+                    const deltaX = hatX - e.clientX;
+                    const deltaY = hatY - e.clientY;
+                    const distance = Math.sqrt(deltaX*deltaX + deltaY*deltaY);
+
+                    if(distance < 300) {
+                        const force = (300 - distance)/300;
+                        hat.style.transform = `translate(${-deltaX * 0.15}px, ${-deltaY * 0.15}px)`;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
